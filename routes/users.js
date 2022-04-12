@@ -5,10 +5,14 @@ const authenticate = require('../authenticate');
 
 const router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-    res.send('respond with a resource');
-});
+/* GET users listing. I got the below idea of how to return the details of all exsisting users documents
+ from what a nucamp student Melissa Engleman had posted on slack. .*/
+router.get('/', authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    User.find()
+    .then(users => {
+        res.json(users);
+    })
+  })
 
 router.post('/signup', (req, res) => {
   User.register(
